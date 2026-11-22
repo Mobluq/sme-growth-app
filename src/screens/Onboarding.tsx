@@ -1,15 +1,25 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronLeft, Check, Delete, Briefcase, Store, CheckCircle2 } from 'lucide-react'
+import { ChevronLeft, Check, Delete, Briefcase, Store, CheckCircle2, Users, Receipt, TrendingUp, Banknote, type LucideIcon } from 'lucide-react'
 import { useDispatch } from '../store/store'
 import { StatusBar } from '../ui/phone'
 import { Button, Field, cx } from '../ui/primitives'
-import type { BusinessKind, WhoHandles } from '../lib/types'
+import type { BusinessKind, WhoHandles, FeatureKey, Features } from '../lib/types'
 
 const SLIDES = [
   { t: 'Your whole business, in one app', s: 'Pay suppliers, run payroll, set aside tax and grow your cash.' },
   { t: 'See your money the moment it moves', s: 'Collections, transfers and POS settle into one clear view.' },
-  { t: 'Grow when you are ready', s: 'Loans sized to real sales, staff pensions and investments.' },
+  { t: 'Built around how you trade', s: 'Pick what you need and the app shapes itself to your business.' },
+]
+
+// The choices that personalise the app. Sending and receiving money are the
+// spine and stay on for everyone, so they are not offered here.
+const GOALS: { key: FeatureKey; title: string; sub: string; Icon: LucideIcon }[] = [
+  { key: 'payroll', title: 'Pay my staff', sub: 'Run payroll and let staff add their own details.', Icon: Users },
+  { key: 'pos', title: 'Take card payments', sub: 'A POS terminal delivered and set up in person.', Icon: Store },
+  { key: 'tax', title: 'Set aside tax', sub: 'We estimate it and help you save gradually.', Icon: Receipt },
+  { key: 'invest', title: 'Grow my cash', sub: 'Earn daily in a GT money market fund.', Icon: TrendingUp },
+  { key: 'loans', title: 'Access working capital', sub: 'Loans sized to your real sales history.', Icon: Banknote },
 ]
 
 function Dots({ n, i }: { n: number; i: number }) {
@@ -33,6 +43,19 @@ function Radio({ title, sub, icon, on, onClick }: { title: string; sub: string; 
   )
 }
 
+function GoalCard({ title, sub, Icon, on, onClick }: { title: string; sub: string; Icon: LucideIcon; on: boolean; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className={cx('w-full flex items-center gap-3 p-4 rounded-2xl border text-left transition', on ? 'border-gt bg-gt-50' : 'border-line bg-white')}>
+      <span className={cx('w-11 h-11 rounded-xl flex items-center justify-center shrink-0', on ? 'bg-white text-gt' : 'bg-paper text-ink border border-line')}><Icon size={20} /></span>
+      <span className="flex-1">
+        <span className="block text-[15px] font-bold text-ink">{title}</span>
+        <span className="block text-[12.5px] text-ink-mute leading-snug">{sub}</span>
+      </span>
+      <span className={cx('w-6 h-6 rounded-md border-2 grid place-items-center shrink-0', on ? 'border-gt bg-gt' : 'border-line')}>{on && <Check size={14} className="text-white" />}</span>
+    </button>
+  )
+}
+
 export function Onboarding() {
   const d = useDispatch()
   const [step, setStep] = useState(0)
@@ -42,13 +65,16 @@ export function Onboarding() {
   const [type, setType] = useState('Retail / Provisions')
   const [cat, setCat] = useState('Wholesale & Retail')
   const [who, setWho] = useState<WhoHandles>('both')
+  const [goals, setGoals] = useState<Features>({ payments: true, collections: true, payroll: false, pos: true, tax: true, invest: false, loans: false })
   const [pin, setPin] = useState('')
 
-  const seg = Math.min(5, step) // steps 1..5 show on the 5-segment bar
+  const seg = Math.min(6, step) // steps 1..6 show on the 6-segment bar
   const next = () => setStep((s) => s + 1)
   const back = () => (step === 1 && slide === 0 ? setStep(0) : setStep((s) => s - 1))
+  const toggleGoal = (k: FeatureKey) => setGoals((g) => ({ ...g, [k]: !g[k] }))
+  const picked = GOALS.filter((g) => goals[g.key]).length
 
-  const finish = () => d({ type: 'onboard', business: { name: name || 'My Business', kind, type, category: cat, whoHandles: who } })
+  const finish = () => d({ type: 'onboard', business: { name: name || 'My Business', kind, type, category: cat, whoHandles: who }, features: goals })
 
   // Step 0: intro carousel
   if (step === 0) {
@@ -85,9 +111,9 @@ export function Onboarding() {
     <>
       <StatusBar />
       <div className="shrink-0 px-6 pt-1 pb-3 flex items-center gap-4">
-        <button onClick={back} className="w-9 h-9 -ml-2 rounded-full grid place-items-center active:bg-line/60"><ChevronLeft size={22} /></button>
+        <button onClick={back} aria-label="Back" className="w-9 h-9 -ml-2 rounded-full grid place-items-center active:bg-line/60"><ChevronLeft size={22} /></button>
         <div className="flex-1 flex gap-1.5">
-          {Array.from({ length: 5 }).map((_, k) => <span key={k} className={cx('flex-1 h-1.5 rounded-full', k < seg ? 'bg-ink' : 'bg-line')} />)}
+          {Array.from({ length: 6 }).map((_, k) => <span key={k} className={cx('flex-1 h-1.5 rounded-full', k < seg ? 'bg-ink' : 'bg-line')} />)}
         </div>
       </div>
 
@@ -154,6 +180,16 @@ export function Onboarding() {
             </>)}
 
             {step === 6 && (<>
+              <h1 className="text-[26px] font-extrabold text-ink tracking-tight leading-tight">What do you want to use GTBank for?</h1>
+              <p className="text-[14px] text-ink-mute mt-1">Pick what fits. Sending and receiving money are always on, and you can add the rest anytime.</p>
+              <div className="space-y-2.5 mt-5">
+                {GOALS.map((g) => <GoalCard key={g.key} title={g.title} sub={g.sub} Icon={g.Icon} on={goals[g.key]} onClick={() => toggleGoal(g.key)} />)}
+              </div>
+              <div className="flex-1 min-h-4" />
+              <Button full onClick={next}>{picked > 0 ? `Continue with ${picked} selected` : 'Continue'}</Button>
+            </>)}
+
+            {step === 7 && (<>
               <h1 className="text-[26px] font-extrabold text-ink tracking-tight">Create transaction PIN</h1>
               <p className="text-[14px] text-ink-mute mt-1">You will use this 4-digit PIN to authorise payments.</p>
               <div className="flex gap-3 mt-7 justify-center">
@@ -169,15 +205,15 @@ export function Onboarding() {
               <Button full className="mt-4" disabled={pin.length < 4} onClick={next}>Create PIN</Button>
             </>)}
 
-            {step === 7 && (<div className="flex-1 flex flex-col items-center justify-center text-center">
+            {step === 8 && (<div className="flex-1 flex flex-col items-center justify-center text-center">
               <motion.span initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', damping: 14 }} className="w-20 h-20 rounded-full bg-good grid place-items-center"><CheckCircle2 size={44} className="text-white" /></motion.span>
-              <h1 className="text-[24px] font-extrabold text-ink mt-6">Your account is ready</h1>
-              <p className="text-[14.5px] text-ink-mute mt-2 max-w-[280px]">Welcome to SME Growth. Your identity is verified. Manage payments, get paid and grow, all in one place.</p>
+              <h1 className="text-[24px] font-extrabold text-ink mt-6">Your app is ready</h1>
+              <p className="text-[14.5px] text-ink-mute mt-2 max-w-[280px]">We have set it up around what you picked. Add or remove anything later under More.</p>
             </div>)}
 
           </motion.div>
         </AnimatePresence>
-        {step === 7 && <Button full onClick={finish}>Go to Home</Button>}
+        {step === 8 && <Button full onClick={finish}>Go to Home</Button>}
       </div>
     </>
   )

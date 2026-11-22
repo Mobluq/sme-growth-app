@@ -9,6 +9,11 @@ export interface Business {
   whoHandles: WhoHandles
 }
 
+// What the app surfaces for this account, chosen during onboarding.
+// `payments` and `collections` are the spine and are always on.
+export type FeatureKey = 'payments' | 'collections' | 'payroll' | 'pos' | 'tax' | 'invest' | 'loans'
+export type Features = Record<FeatureKey, boolean>
+
 export interface Recipient {
   id: string
   name: string
@@ -58,7 +63,7 @@ export interface Pos {
   idleFlag?: boolean
 }
 
-export type SignalKind = 'payroll' | 'pos' | 'loan' | 'tax'
+export type SignalKind = 'payroll' | 'pos' | 'loan' | 'tax' | 'invest'
 export interface Signal {
   id: string
   kind: SignalKind
@@ -79,6 +84,7 @@ export interface LoanOffer {
 export interface AppState {
   onboarded: boolean
   business: Business
+  features: Features
   balance: number
   moneyIn: number
   moneyOut: number

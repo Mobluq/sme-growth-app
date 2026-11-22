@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Home, Wallet, Users, LineChart, MoreHorizontal, ChevronLeft } from 'lucide-react'
-import { useNav, type Tab } from '../nav/nav'
+import { useNav, visibleTabs, type Tab } from '../nav/nav'
+import { useApp } from '../store/store'
 import { cx } from './primitives'
 
 export function PhoneFrame({ children }: { children: ReactNode }) {
@@ -29,20 +30,22 @@ export function StatusBar({ dark = false }: { dark?: boolean }) {
   )
 }
 
-const TABS: { key: Tab; label: string; Icon: typeof Home }[] = [
-  { key: 'home', label: 'Home', Icon: Home },
-  { key: 'payment', label: 'Payment', Icon: Wallet },
-  { key: 'payroll', label: 'Payroll', Icon: Users },
-  { key: 'grow', label: 'Grow', Icon: LineChart },
-  { key: 'more', label: 'More', Icon: MoreHorizontal },
-]
+const TAB_META: Record<Tab, { label: string; Icon: typeof Home }> = {
+  home: { label: 'Home', Icon: Home },
+  payment: { label: 'Payments', Icon: Wallet },
+  payroll: { label: 'Payroll', Icon: Users },
+  grow: { label: 'Grow', Icon: LineChart },
+  more: { label: 'More', Icon: MoreHorizontal },
+}
 
 export function TabBar() {
   const { tab, setTab } = useNav()
+  const tabs = visibleTabs(useApp().features)
   return (
     <div className="absolute bottom-0 left-0 right-0 z-20">
       <div className="mx-3 mb-3 h-16 rounded-3xl bg-white/90 backdrop-blur border border-line shadow-pop flex items-center justify-around px-1">
-        {TABS.map(({ key, label, Icon }) => {
+        {tabs.map((key) => {
+          const { label, Icon } = TAB_META[key]
           const on = tab === key
           return (
             <button key={key} onClick={() => setTab(key)} className="flex flex-col items-center gap-1 w-14 py-1">

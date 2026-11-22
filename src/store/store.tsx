@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useReducer, type ReactNode, type Dispatch } from 'react'
-import type { AppState, Business, Recipient, LoanOffer } from '../lib/types'
+import type { AppState, Business, Recipient, LoanOffer, Features, FeatureKey } from '../lib/types'
 import { demoState, initialState } from './seed'
 import { uid } from '../lib/format'
 
 const KEY = 'sme-growth-state-v1'
 
 export type Action =
-  | { type: 'onboard'; business: Business }
+  | { type: 'onboard'; business: Business; features: Features }
   | { type: 'approve'; id: string }
   | { type: 'decline'; id: string }
   | { type: 'transfer'; name: string; bank: string; account: string; amount: number; save?: boolean }
@@ -21,6 +21,7 @@ export type Action =
   | { type: 'invest'; amount: number }
   | { type: 'acceptLoan' }
   | { type: 'dismissSignal'; id: string }
+  | { type: 'toggleFeature'; key: FeatureKey }
   | { type: 'reset' }
 
 function spend(s: AppState, amount: number): Pick<AppState, 'balance' | 'moneyOut'> {
@@ -30,7 +31,7 @@ function spend(s: AppState, amount: number): Pick<AppState, 'balance' | 'moneyOu
 function reducer(s: AppState, a: Action): AppState {
   switch (a.type) {
     case 'onboard':
-      return demoState({ onboarded: true, business: a.business })
+      return demoState({ onboarded: true, business: a.business, features: a.features })
 
     case 'approve': {
       const ap = s.approvals.find((x) => x.id === a.id)
@@ -126,6 +127,11 @@ function reducer(s: AppState, a: Action): AppState {
 
     case 'dismissSignal':
       return { ...s, signals: s.signals.filter((x) => x.id !== a.id) }
+
+    case 'toggleFeature': {
+      if (a.key === 'payments' || a.key === 'collections') return s // core, always on
+      return { ...s, features: { ...s.features, [a.key]: !s.features[a.key] } }
+    }
 
     case 'reset':
       return initialState()

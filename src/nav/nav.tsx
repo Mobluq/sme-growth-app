@@ -1,6 +1,18 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
+import type { Features } from '../lib/types'
 
 export type Tab = 'home' | 'payment' | 'payroll' | 'grow' | 'more'
+
+// The tabs shown depend on what the business chose during onboarding.
+// Home, Payments and More are always present; Payroll and Grow are earned
+// by picking the matching features. Max 5, so the bar never overflows.
+export function visibleTabs(f: Features): Tab[] {
+  const tabs: Tab[] = ['home', 'payment']
+  if (f.payroll) tabs.push('payroll')
+  if (f.tax || f.invest || f.loans) tabs.push('grow')
+  tabs.push('more')
+  return tabs
+}
 
 export interface StackItem {
   key: string

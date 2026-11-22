@@ -1,6 +1,7 @@
+import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { StoreProvider, useApp } from './store/store'
-import { NavProvider, useNav } from './nav/nav'
+import { NavProvider, useNav, visibleTabs } from './nav/nav'
 import { ToastHost } from './ui/primitives'
 import { PhoneFrame, StatusBar, TabBar, ScreenHeader, Body } from './ui/phone'
 import { Onboarding } from './screens/Onboarding'
@@ -63,12 +64,16 @@ function TabScreen({ tab }: { tab: string }) {
 }
 
 function Shell() {
-  const { tab, stack } = useNav()
+  const { tab, stack, setTab } = useNav()
+  const features = useApp().features
+  const tabs = visibleTabs(features)
+  const activeTab = tabs.includes(tab) ? tab : 'home'
+  useEffect(() => { if (!tabs.includes(tab)) setTab('home') }, [features, tab, setTab]) // keep the selected tab valid when features change
   return (
     <>
       <StatusBar />
       <div className="relative flex-1 min-h-0">
-        <div className="absolute inset-0 flex flex-col"><TabScreen tab={tab} /></div>
+        <div className="absolute inset-0 flex flex-col"><TabScreen tab={activeTab} /></div>
         <AnimatePresence>
           {stack.map((item, i) => (
             <motion.div key={item.id} className="absolute inset-0 bg-paper flex flex-col" style={{ zIndex: 10 + i }}
