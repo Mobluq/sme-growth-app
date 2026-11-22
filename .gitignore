@@ -4,3 +4,6 @@ shots
 deploy-files.json
 out
 *.cjs
+refs.json
+part*.json
+sme-growth-app.html
