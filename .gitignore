@@ -1,0 +1,6 @@
+node_modules
+dist
+shots
+deploy-files.json
+out
+*.cjs

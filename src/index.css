@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root{ color-scheme: light; }
+*{ -webkit-tap-highlight-color: transparent; }
+html,body,#root{ height:100%; }
+body{ margin:0; background:#201b17; font-family:'Geist',Inter,system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+.no-scrollbar::-webkit-scrollbar{ display:none; }
+.no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
+.tnum{ font-variant-numeric: tabular-nums; }
