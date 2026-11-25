@@ -32,9 +32,9 @@ export function StatusBar({ dark = false }: { dark?: boolean }) {
 
 const TAB_META: Record<Tab, { label: string; Icon: typeof Home }> = {
   home: { label: 'Home', Icon: Home },
-  payment: { label: 'Payments', Icon: Wallet },
+  payment: { label: 'Payment', Icon: Wallet },
   payroll: { label: 'Payroll', Icon: Users },
-  grow: { label: 'Grow', Icon: LineChart },
+  grow: { label: 'Invest', Icon: LineChart },
   more: { label: 'More', Icon: MoreHorizontal },
 }
 
@@ -42,17 +42,15 @@ export function TabBar() {
   const { tab, setTab } = useNav()
   const tabs = visibleTabs(useApp().features)
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-20">
-      <div className="mx-3 mb-3 h-16 rounded-3xl bg-white/90 backdrop-blur border border-line shadow-pop flex items-center justify-around px-1">
+    <div className="absolute bottom-0 left-0 right-0 z-20 bg-card border-t border-line">
+      <div className="flex items-stretch justify-around px-1 pt-2 pb-3">
         {tabs.map((key) => {
           const { label, Icon } = TAB_META[key]
           const on = tab === key
           return (
-            <button key={key} onClick={() => setTab(key)} className="flex flex-col items-center gap-1 w-14 py-1">
-              <span className={cx('flex items-center justify-center w-9 h-7 rounded-xl transition', on && 'bg-gt-50')}>
-                <Icon size={20} className={on ? 'text-gt' : 'text-ink-mute'} strokeWidth={on ? 2.4 : 2} />
-              </span>
-              <span className={cx('text-[10.5px] font-semibold', on ? 'text-gt' : 'text-ink-mute')}>{label}</span>
+            <button key={key} onClick={() => setTab(key)} className="flex flex-col items-center gap-1 flex-1 py-0.5">
+              <Icon size={21} className={on ? 'text-gt' : 'text-ink-mute'} strokeWidth={on ? 2.4 : 1.9} />
+              <span className={cx('text-[11px] font-semibold', on ? 'text-gt' : 'text-ink-mute')}>{label}</span>
             </button>
           )
         })}

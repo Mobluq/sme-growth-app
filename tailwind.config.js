@@ -4,14 +4,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        gt: { DEFAULT:'#F55820', 600:'#DE460F', 700:'#BA380B', 50:'#FEF1EB', 100:'#FBDCCE' },
-        ink: { DEFAULT:'#17120E', soft:'#413A33', mute:'#8C847B' },
-        paper: '#FBFAF7',
+        // Sampled from the SME-GROWTH-APP prototype: warm coral-orange, warm
+        // charcoal ink, white screens, peach accents.
+        gt: { DEFAULT:'#E85C2A', 600:'#CF4A1C', 700:'#AD3D15', 50:'#FDF0EA', 100:'#F9D7C7' },
+        ink: { DEFAULT:'#221C19', soft:'#5A534E', mute:'#938B84' },
+        paper: '#FDFDFD',
         card: '#FFFFFF',
-        line: '#ECE8E1',
+        line: '#EEEDEB',
         money: '#171311',
-        good: '#1E9E6A',
-        warn: '#E8A33D'
+        good: '#16A06B',
+        warn: '#E8A33D',
+        bad: '#E5533A'
       },
       fontFamily: { sans: ['Geist','Inter','ui-sans-serif','system-ui','-apple-system','Segoe UI','Roboto','sans-serif'] },
       boxShadow: {

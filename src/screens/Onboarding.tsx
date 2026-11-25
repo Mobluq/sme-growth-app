@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronLeft, Check, Delete, Briefcase, Store, CheckCircle2, Users, Receipt, TrendingUp, Banknote, type LucideIcon } from 'lucide-react'
+import { ChevronLeft, Check, Delete, Briefcase, Store, CheckCircle2, Users, Receipt, TrendingUp, Banknote, Bell, Eye, ArrowUpRight, ChevronRight, Layers, type LucideIcon } from 'lucide-react'
 import { useDispatch } from '../store/store'
 import { StatusBar } from '../ui/phone'
 import { Button, Field, cx } from '../ui/primitives'
@@ -100,32 +100,60 @@ export function Onboarding() {
     )
   }
 
-  // Step 0: intro carousel
+  // Step 0: single intro screen (matches the prototype)
   if (step === 0) {
-    const last = slide === SLIDES.length - 1
+    const mini = [[ArrowUpRight, 'Loans'], [Store, 'POS'], [Users, 'Payroll']] as [LucideIcon, string][]
     return (
       <>
         <StatusBar />
-        <div className="flex-1 min-h-0 flex flex-col px-6 pb-8">
-          <div className="flex-1 flex items-center justify-center">
-            <div className="w-full max-w-[300px] rounded-xl3 p-5 text-white shadow-money" style={{ background: 'linear-gradient(155deg,#2a211c,#161110)' }}>
-              <div className="text-white/55 text-[12px]">Available balance</div>
-              <div className="text-[30px] font-extrabold tnum mt-1">{'₦'}2,458,300</div>
-              <div className="mt-4 rounded-2xl bg-white p-3 text-ink shadow-pop">
-                <div className="flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-full bg-paper border border-line grid place-items-center text-[11px] font-bold">GA</span>
-                  <div className="flex-1"><div className="text-[13px] font-bold leading-none">Greenfield Agro</div><div className="text-[11px] text-ink-mute">Awaiting approval</div></div>
-                </div>
-                <div className="mt-2.5 h-9 rounded-xl bg-gt text-white text-[13px] font-semibold grid place-items-center">Approve {'₦'}480,000</div>
+        <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar flex flex-col px-6 pb-7">
+          <h1 className="text-[30px] font-extrabold text-ink leading-[1.05] tracking-tight mt-2">
+            Run and grow your business in <span className="text-gt">one app.</span>
+          </h1>
+          <p className="text-[14.5px] text-ink-mute mt-3 leading-snug max-w-[310px]">Get paid, pay your team, access funding and accept payments with a POS.</p>
+
+          <div className="relative flex-1 min-h-[310px] my-4">
+            <div className="absolute inset-x-2 top-6 bottom-0 rounded-[2.2rem] bg-gradient-to-b from-gt-50 to-transparent" />
+            <div className="relative mx-auto mt-7 w-[244px] rounded-[1.6rem] bg-white border border-line shadow-pop p-3.5">
+              <div className="flex items-center gap-2">
+                <span className="w-7 h-7 rounded-full bg-paper border border-line grid place-items-center text-[10px] font-bold">HM</span>
+                <div className="flex-1 text-[12.5px] font-bold text-ink">Hello, HelenMart</div>
+                <Bell size={14} className="text-ink-mute" />
               </div>
-              <div className="mt-3 inline-flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 text-ink text-[12px] font-semibold"><Check size={14} className="text-good" /> Payroll sent to 5 staff</div>
+              <div className="mt-3 rounded-2xl p-3 text-white" style={{ background: 'linear-gradient(155deg,#2a211c,#161110)' }}>
+                <div className="flex items-center gap-1 text-white/55 text-[10.5px]">Available balance <Eye size={11} /></div>
+                <div className="text-[20px] font-extrabold tnum mt-0.5">{'₦'}2,458,300<span className="text-[11px] text-white/45">.00</span></div>
+                <div className="flex justify-between mt-2 text-[9.5px] text-white/50">
+                  <span>Money in <b className="text-white">{'₦'}3.4m</b> <span className="text-good">▲</span></span>
+                  <span>Money out <b className="text-white">{'₦'}1.6m</b> <span className="text-bad">▼</span></span>
+                </div>
+              </div>
+              <div className="flex justify-around mt-3">
+                {mini.map(([I, l], i) => (
+                  <div key={i} className="flex flex-col items-center gap-1">
+                    <span className="w-8 h-8 rounded-full border border-line grid place-items-center"><I size={14} className="text-ink" /></span>
+                    <span className="text-[9px] text-ink-soft">{l}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 rounded-xl bg-gt-50 border border-gt-100 px-2.5 py-2 flex items-center gap-2">
+                <div className="flex-1"><div className="text-[10px] font-bold text-ink leading-tight">3 payments awaiting approval</div><div className="text-[8.5px] text-ink-mute">Review and approve requests</div></div>
+                <ChevronRight size={12} className="text-gt" />
+              </div>
+            </div>
+            <div className="absolute top-3 right-2 bg-white rounded-2xl shadow-pop border border-line px-3 py-2 flex flex-col items-center gap-0.5">
+              <Store size={15} className="text-gt" /><span className="text-[10px] font-bold text-ink">Get a POS</span>
+            </div>
+            <div className="absolute top-[46%] left-0 bg-white rounded-2xl shadow-pop border border-line px-3 py-2 flex flex-col items-center gap-0.5">
+              <Layers size={15} className="text-gt" /><span className="text-[10px] font-bold text-ink">Overdraft</span>
+            </div>
+            <div className="absolute bottom-3 right-1 bg-white rounded-2xl shadow-pop border border-line px-3 py-2 flex flex-col items-center gap-0.5">
+              <Users size={15} className="text-gt" /><span className="text-[10px] font-bold text-ink">Run payroll</span>
             </div>
           </div>
-          <Dots n={SLIDES.length} i={slide} />
-          <h1 className="text-[27px] font-extrabold text-ink leading-[1.05] mt-5 tracking-tight">{SLIDES[slide].t}</h1>
-          <p className="text-[15px] text-ink-mute mt-2 leading-snug">{SLIDES[slide].s}</p>
-          <Button full className="mt-6" onClick={() => (last ? setStep(1) : setSlide(slide + 1))}>{last ? 'Get started' : 'Next'}</Button>
-          <button onClick={() => setMode('signin')} className="mt-3 text-[13.5px] text-ink-mute">Already have an account? <span className="text-gt font-semibold">Sign In</span></button>
+
+          <Button full onClick={() => setStep(1)}>Next</Button>
+          <button onClick={() => setMode('signin')} className="mt-3 text-[13.5px] text-ink-mute text-center">Already have an account? <span className="text-gt font-semibold">Sign In</span></button>
         </div>
       </>
     )

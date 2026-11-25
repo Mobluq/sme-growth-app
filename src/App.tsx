@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { StoreProvider, useApp } from './store/store'
 import { NavProvider, useNav, visibleTabs } from './nav/nav'
@@ -27,6 +27,8 @@ import { About } from './screens/flows/About'
 import { InviteStaff } from './screens/flows/InviteStaff'
 import { RunPayroll } from './screens/flows/RunPayroll'
 import { PayrollSetup } from './screens/flows/PayrollSetup'
+import { PayBills } from './screens/flows/PayBills'
+import { Logo } from './components/Logo'
 
 function FlowPlaceholder({ title }: { title: string }) {
   return <><ScreenHeader title={title} /><Body><p className="text-ink-mute mt-2">Coming together.</p></Body></>
@@ -51,6 +53,7 @@ const FLOWS: Record<string, (p: Params) => JSX.Element> = {
   'invite-staff': () => <InviteStaff />,
   'run-payroll': () => <RunPayroll />,
   'payroll-setup': () => <PayrollSetup />,
+  'pay-bills': () => <PayBills />,
 }
 
 function TabScreen({ tab }: { tab: string }) {
@@ -88,8 +91,24 @@ function Shell() {
   )
 }
 
+function Splash() {
+  return (
+    <>
+      <StatusBar />
+      <div className="flex-1 flex flex-col items-center justify-center bg-paper">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, ease: 'easeOut' }}>
+          <Logo size={27} />
+        </motion.div>
+      </div>
+    </>
+  )
+}
+
 function Root() {
   const s = useApp()
+  const [booted, setBooted] = useState(false)
+  useEffect(() => { const t = setTimeout(() => setBooted(true), 1500); return () => clearTimeout(t) }, [])
+  if (!booted) return <Splash />
   return s.onboarded ? <Shell /> : <Onboarding />
 }
 

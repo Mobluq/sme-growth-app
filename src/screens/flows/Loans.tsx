@@ -14,12 +14,12 @@ export function Loans() {
 
   if (!loan) return (
     <>
-      <ScreenHeader title="Working capital" />
+      <ScreenHeader title="Overdraft" />
       <Body>
         <div className="flex flex-col items-center text-center mt-14">
           <span className="w-16 h-16 rounded-full bg-paper border border-line grid place-items-center"><Lock size={24} className="text-ink-mute" /></span>
           <h1 className="text-[19px] font-bold text-ink mt-5">No offer yet</h1>
-          <p className="text-[13.5px] text-ink-mute mt-2 max-w-[280px]">Your loan size is set by your real sales. Start taking card payments on a POS, and an offer builds from your history, repaid from daily sales.</p>
+          <p className="text-[13.5px] text-ink-mute mt-2 max-w-[280px]">Your overdraft limit is set by your real sales. Start taking card payments on a POS, and a limit builds from your history, repaid from daily sales.</p>
         </div>
         <Button full className="mt-10" onClick={() => push('request-pos')}><Store size={18} /> Request a POS</Button>
       </Body>
@@ -28,11 +28,11 @@ export function Loans() {
 
   if (loan.accepted) return (
     <>
-      <ScreenHeader title="Working capital" />
+      <ScreenHeader title="Overdraft" />
       <Body>
         <div className="flex flex-col items-center text-center mt-10">
           <CheckCircle2 size={64} className="text-good" />
-          <h1 className="text-[20px] font-extrabold text-ink mt-4">Loan active</h1>
+          <h1 className="text-[20px] font-extrabold text-ink mt-4">Overdraft active</h1>
           <p className="text-[14px] text-ink-mute mt-2">{naira(loan.amount)} is in your account.</p>
         </div>
         <Card className="px-4 divide-y divide-line mt-6">
@@ -46,7 +46,7 @@ export function Loans() {
 
   return (
     <>
-      <ScreenHeader title="Working capital" />
+      <ScreenHeader title="Overdraft" />
       <Body>
         <Card className="p-5 text-center">
           <div className="flex items-center justify-center gap-2 text-gt"><Banknote size={16} /><span className="text-[11px] font-bold tracking-wide uppercase">Your offer</span></div>
@@ -61,9 +61,9 @@ export function Loans() {
         <Button full className="mt-6" onClick={() => setConfirm(true)}>Accept {naira(loan.amount)}</Button>
         <p className="text-[12px] text-ink-mute text-center mt-3">A small share of each day's card sales repays the loan automatically.</p>
       </Body>
-      <ConfirmSheet open={confirm} onClose={() => setConfirm(false)} title="Accept loan"
+      <ConfirmSheet open={confirm} onClose={() => setConfirm(false)} title="Accept overdraft"
         rows={[{ label: 'Amount', value: naira(loan.amount) }, { label: 'Term', value: `${loan.termMonths} months` }, { label: 'Repay', value: 'From daily sales' }]}
-        onConfirm={() => { d({ type: 'acceptLoan' }); toast('Loan disbursed') }} />
+        onConfirm={() => { d({ type: 'acceptLoan' }); toast('Overdraft disbursed') }} />
     </>
   )
 }
