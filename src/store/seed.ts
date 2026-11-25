@@ -30,7 +30,7 @@ export function demoState(overrides: Partial<AppState> = {}): AppState {
 
   const base: AppState = {
     onboarded: true,
-    version: 1,
+    version: 2,
     features: f,
     business: { name: 'HelenMart', kind: 'running', type: 'Retail / Provisions', category: 'Wholesale & Retail', whoHandles: 'both' },
     balance: 2_458_300,

@@ -4,6 +4,7 @@ import { demoState, initialState } from './seed'
 import { uid } from '../lib/format'
 
 const KEY = 'sme-growth-state-v1'
+const VERSION = 2 // bump to discard state saved by an older, incompatible build
 
 export type Action =
   | { type: 'onboard'; business: Business; features: Features }
@@ -150,7 +151,7 @@ function load(): AppState {
     const raw = localStorage.getItem(KEY)
     if (raw) {
       const p = JSON.parse(raw)
-      if (p && p.version === 1) return p as AppState
+      if (p && p.version === VERSION && p.features && typeof p.features === 'object') return p as AppState
     }
   } catch { /* ignore */ }
   return initialState()

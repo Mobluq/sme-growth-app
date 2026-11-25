@@ -7,6 +7,7 @@ export type Tab = 'home' | 'payment' | 'payroll' | 'grow' | 'more'
 // Home, Payments and More are always present; Payroll and Grow are earned
 // by picking the matching features. Max 5, so the bar never overflows.
 export function visibleTabs(f: Features): Tab[] {
+  if (!f) return ['home', 'payment', 'more']
   const tabs: Tab[] = ['home', 'payment']
   if (f.payroll) tabs.push('payroll')
   if (f.tax || f.invest || f.loans) tabs.push('grow')
