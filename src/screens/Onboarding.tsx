@@ -67,6 +67,7 @@ export function Onboarding() {
   const [who, setWho] = useState<WhoHandles>('both')
   const [goals, setGoals] = useState<Features>({ payments: true, collections: true, payroll: false, pos: true, tax: true, invest: false, loans: false })
   const [pin, setPin] = useState('')
+  const [mode, setMode] = useState<'onboard' | 'signin'>('onboard')
 
   const seg = Math.min(6, step) // steps 1..6 show on the 6-segment bar
   const next = () => setStep((s) => s + 1)
@@ -75,6 +76,29 @@ export function Onboarding() {
   const picked = GOALS.filter((g) => goals[g.key]).length
 
   const finish = () => d({ type: 'onboard', business: { name: name || 'My Business', kind, type, category: cat, whoHandles: who }, features: goals })
+
+  // Returning user: a real sign-in that opens the full demo account.
+  if (mode === 'signin') {
+    return (
+      <>
+        <StatusBar />
+        <div className="flex-1 min-h-0 flex flex-col px-6 pb-8">
+          <button onClick={() => { setMode('onboard'); setStep(0) }} aria-label="Back" className="w-9 h-9 -ml-2 mt-1 rounded-full grid place-items-center active:bg-line/60"><ChevronLeft size={22} /></button>
+          <div className="mt-6">
+            <h1 className="text-[27px] font-extrabold text-ink tracking-tight">Welcome back</h1>
+            <p className="text-[14.5px] text-ink-mute mt-1">Sign in to HelenMart and pick up where you left off.</p>
+          </div>
+          <div className="space-y-4 mt-7">
+            <Field label="Business email or phone" defaultValue="hello@helenmart.com" />
+            <Field label="Password" type="password" defaultValue="password" />
+          </div>
+          <div className="flex-1" />
+          <Button full onClick={() => d({ type: 'signIn' })}>Sign in</Button>
+          <button onClick={() => { setMode('onboard'); setStep(1) }} className="mt-3 text-[13.5px] text-ink-mute text-center">New here? <span className="text-gt font-semibold">Create an account</span></button>
+        </div>
+      </>
+    )
+  }
 
   // Step 0: intro carousel
   if (step === 0) {
@@ -101,7 +125,7 @@ export function Onboarding() {
           <h1 className="text-[27px] font-extrabold text-ink leading-[1.05] mt-5 tracking-tight">{SLIDES[slide].t}</h1>
           <p className="text-[15px] text-ink-mute mt-2 leading-snug">{SLIDES[slide].s}</p>
           <Button full className="mt-6" onClick={() => (last ? setStep(1) : setSlide(slide + 1))}>{last ? 'Get started' : 'Next'}</Button>
-          <button className="mt-3 text-[13.5px] text-ink-mute">Already have an account? <span className="text-gt font-semibold">Sign In</span></button>
+          <button onClick={() => setMode('signin')} className="mt-3 text-[13.5px] text-ink-mute">Already have an account? <span className="text-gt font-semibold">Sign In</span></button>
         </div>
       </>
     )

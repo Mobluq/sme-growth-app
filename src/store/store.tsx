@@ -7,6 +7,7 @@ const KEY = 'sme-growth-state-v1'
 
 export type Action =
   | { type: 'onboard'; business: Business; features: Features }
+  | { type: 'signIn' }
   | { type: 'approve'; id: string }
   | { type: 'decline'; id: string }
   | { type: 'transfer'; name: string; bank: string; account: string; amount: number; save?: boolean }
@@ -32,6 +33,9 @@ function reducer(s: AppState, a: Action): AppState {
   switch (a.type) {
     case 'onboard':
       return demoState({ onboarded: true, business: a.business, features: a.features })
+
+    case 'signIn':
+      return demoState({ onboarded: true })
 
     case 'approve': {
       const ap = s.approvals.find((x) => x.id === a.id)
