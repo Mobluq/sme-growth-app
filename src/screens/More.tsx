@@ -9,7 +9,6 @@ import type { FeatureKey } from '../lib/types'
 const MANAGE: { key: FeatureKey; label: string; sub: string; Icon: LucideIcon }[] = [
   { key: 'payroll', label: 'Pay staff & payroll', sub: 'Adds the Payroll tab', Icon: Users },
   { key: 'pos', label: 'Card payments (POS)', sub: 'Request and track a terminal', Icon: Store },
-  { key: 'tax', label: 'Set aside tax', sub: 'Shows in Invest', Icon: Receipt },
   { key: 'invest', label: 'Grow & invest cash', sub: 'Shows in Invest', Icon: TrendingUp },
   { key: 'loans', label: 'Overdraft', sub: 'Shows in Invest', Icon: Banknote },
 ]

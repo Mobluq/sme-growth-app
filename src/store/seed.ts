@@ -4,7 +4,7 @@ const now = Date.now()
 const iso = (minsAgo: number) => new Date(now - minsAgo * 60000).toISOString()
 
 export const ALL_FEATURES: Features = {
-  payments: true, collections: true, payroll: true, pos: true, tax: true, invest: true, loans: true,
+  payments: true, collections: true, payroll: true, pos: true, invest: true, loans: true,
 }
 
 // Demo data tailored to the chosen features, so an account that skipped payroll
@@ -25,7 +25,6 @@ export function demoState(overrides: Partial<AppState> = {}): AppState {
 
   const signals: AppState['signals'] = []
   if (f.pos) signals.push({ id: 'sig-pos', kind: 'pos', title: 'More customers are paying by transfer', body: 'Collections are up this month. A POS terminal captures walk-in customers too.', cta: 'Request a POS' })
-  else if (f.tax) signals.push({ id: 'sig-tax', kind: 'tax', title: 'Your tax estimate is ready', body: 'We worked out this quarter from your turnover. Set a little aside each week.', cta: 'Set aside tax' })
   else if (f.invest) signals.push({ id: 'sig-invest', kind: 'invest', title: 'Put your idle cash to work', body: 'Your balance can earn every day in a GT money market fund instead of sitting still.', cta: 'Start investing' })
 
   const base: AppState = {

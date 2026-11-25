@@ -35,7 +35,6 @@ export function Home() {
   const setups: { key: FeatureKey; q: string; body: string; cta: string; icon: LucideIcon; go: () => void }[] = [
     { key: 'payroll', q: 'Do you have people who work for you?', body: 'Pay your team and keep salaries organized in one place.', cta: 'Yes, set up payroll', icon: Users, go: () => setTab('payroll') },
     { key: 'pos', q: 'Want to accept card payments?', body: 'Get a POS terminal delivered and set up in person.', cta: 'Yes, get a POS', icon: Store, go: () => push('request-pos') },
-    { key: 'tax', q: 'Planning ahead for tax?', body: 'We estimate it from your turnover and help you set money aside.', cta: 'Set aside tax', icon: Receipt, go: () => push('tax') },
     { key: 'invest', q: 'Have idle cash sitting still?', body: 'Put it to work and earn daily in a GT money market fund.', cta: 'Start investing', icon: TrendingUp, go: () => push('invest') },
     { key: 'loans', q: 'Need working capital?', body: 'An overdraft sized to your real sales history.', cta: 'See overdraft', icon: Banknote, go: () => push('loans') },
   ]

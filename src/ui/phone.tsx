@@ -19,14 +19,17 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
 export function StatusBar({ dark = false }: { dark?: boolean }) {
   const c = dark ? '#fff' : '#17120E'
   return (
-    <div className="shrink-0 h-12 px-6 flex items-center justify-between z-30 select-none" style={{ color: c }}>
+    <>
+      <div className="sm:hidden shrink-0" style={{ height: 'env(safe-area-inset-top, 0px)' }} />
+      <div className="hidden sm:flex shrink-0 h-12 px-6 items-center justify-between z-30 select-none" style={{ color: c }}>
       <span className="text-[15px] font-semibold tnum pt-1">9:41</span>
       <div className="flex items-center gap-1.5 pt-1">
         <svg width="18" height="12" viewBox="0 0 18 12" fill={c}><rect x="0" y="7" width="3" height="5" rx="1" /><rect x="5" y="4" width="3" height="8" rx="1" /><rect x="10" y="2" width="3" height="10" rx="1" opacity=".9" /><rect x="15" y="0" width="3" height="12" rx="1" opacity=".4" /></svg>
         <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 10.5l.01 0M2 5.5a9 9 0 0112 0M4.5 8a5.5 5.5 0 017 0" stroke={c} strokeWidth="1.6" strokeLinecap="round" /></svg>
         <svg width="26" height="13" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="21" height="11" rx="3" stroke={c} strokeOpacity=".4" strokeWidth="1.2" /><rect x="3" y="3" width="15" height="7" rx="1.5" fill={c} /><rect x="23.5" y="4" width="2" height="5" rx="1" fill={c} fillOpacity=".4" /></svg>
       </div>
-    </div>
+      </div>
+    </>
   )
 }
 

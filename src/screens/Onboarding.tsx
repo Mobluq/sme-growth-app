@@ -7,7 +7,7 @@ import { Button, Field, cx } from '../ui/primitives'
 import type { BusinessKind, WhoHandles, FeatureKey, Features } from '../lib/types'
 
 const SLIDES = [
-  { t: 'Your whole business, in one app', s: 'Pay suppliers, run payroll, set aside tax and grow your cash.' },
+  { t: 'Your whole business, in one app', s: 'Pay suppliers, run payroll, accept cards and grow your cash.' },
   { t: 'See your money the moment it moves', s: 'Collections, transfers and POS settle into one clear view.' },
   { t: 'Built around how you trade', s: 'Pick what you need and the app shapes itself to your business.' },
 ]
@@ -17,7 +17,6 @@ const SLIDES = [
 const GOALS: { key: FeatureKey; title: string; sub: string; Icon: LucideIcon }[] = [
   { key: 'payroll', title: 'Pay my staff', sub: 'Run payroll and let staff add their own details.', Icon: Users },
   { key: 'pos', title: 'Take card payments', sub: 'A POS terminal delivered and set up in person.', Icon: Store },
-  { key: 'tax', title: 'Set aside tax', sub: 'We estimate it and help you save gradually.', Icon: Receipt },
   { key: 'invest', title: 'Grow my cash', sub: 'Earn daily in a GT money market fund.', Icon: TrendingUp },
   { key: 'loans', title: 'Access working capital', sub: 'Loans sized to your real sales history.', Icon: Banknote },
 ]
@@ -65,7 +64,7 @@ export function Onboarding() {
   const [type, setType] = useState('Retail / Provisions')
   const [cat, setCat] = useState('Wholesale & Retail')
   const [who, setWho] = useState<WhoHandles>('both')
-  const [goals, setGoals] = useState<Features>({ payments: true, collections: true, payroll: false, pos: true, tax: true, invest: false, loans: false })
+  const [goals, setGoals] = useState<Features>({ payments: true, collections: true, payroll: false, pos: true, invest: false, loans: false })
   const [pin, setPin] = useState('')
   const [mode, setMode] = useState<'onboard' | 'signin'>('onboard')
 

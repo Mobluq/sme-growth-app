@@ -10,7 +10,7 @@ export function visibleTabs(f: Features): Tab[] {
   if (!f) return ['home', 'payment', 'more']
   const tabs: Tab[] = ['home', 'payment']
   if (f.payroll) tabs.push('payroll')
-  if (f.tax || f.invest || f.loans) tabs.push('grow')
+  if (f.invest || f.loans) tabs.push('grow')
   tabs.push('more')
   return tabs
 }

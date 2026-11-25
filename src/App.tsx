@@ -18,7 +18,6 @@ import { TxnsAll } from './screens/flows/TxnsAll'
 import { TxnDetail } from './screens/flows/TxnDetail'
 import { RequestPos } from './screens/flows/RequestPos'
 import { PosStatus } from './screens/flows/PosStatus'
-import { Tax } from './screens/flows/Tax'
 import { Invest } from './screens/flows/Invest'
 import { Loans } from './screens/flows/Loans'
 import { Notifications } from './screens/flows/Notifications'
@@ -44,7 +43,6 @@ const FLOWS: Record<string, (p: Params) => JSX.Element> = {
   txn: (p) => <TxnDetail id={p?.id as string} />,
   'request-pos': () => <RequestPos />,
   'pos-status': () => <PosStatus />,
-  tax: () => <Tax />,
   invest: () => <Invest />,
   loans: () => <Loans />,
   notifications: () => <Notifications />,
